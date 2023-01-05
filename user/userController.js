@@ -6,8 +6,12 @@ const bcrypt = require('bcryptjs')
 
 
 router.get('/admin/users', (req, res)=>{
-    res.send(' Listagem de usuarios')
+
+    User.findAll().then(users =>{
+        res.render('admin/users/index',{ users: users})
+    })
 })
+    
 
 
 router.get('/admin/users/create', (req, res)=>{
@@ -18,24 +22,38 @@ router.post('/users/create', (req, res)=>{
     var email = req.body.email
     var password = req.body.password
 
-    var salt = bcrypt.genSaltSync(10);
+
+    User.findOne({ where:{ email: email } }).then( user=> {
+
+        if(user != undefined){
+
+            console.log('email já está em uso!')
+            res.redirect('/admin/users/create')
+        }else{
+
+            var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(password, salt)  
 
 
    User.create({
 
         email: email,
-        password: hash
+        password: hash        
 
     }).then(()=>{
         res.redirect('/')
-        
+         
         console.log('usuario cadastrado com sucesso')
 
     }).catch(err =>{
 
         console.log('erro ao cadatrar usuario' + err)
     })
+        }
+        
+    })
+
+    
 
 })
 

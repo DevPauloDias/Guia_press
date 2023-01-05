@@ -16,9 +16,11 @@ const Article = connection.define('articles', {
         allowNull: false
     }
 })
+
 // Definindo os tipos de relacionamento das tabelas
 Category.hasMany(Article) // uma categoria tem vários artigos
 Article.belongsTo(Category) // um artigo pertence a uma categoria
+
 
 
 

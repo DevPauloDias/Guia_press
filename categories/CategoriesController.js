@@ -31,6 +31,8 @@ router.get('/admin/categories', (req, res)=>{
 
     Category.findAll().then(categories =>{
       res.render('admin/categories/index', {categories: categories})
+    }).catch((erro)=>{
+        console.log('erro em: '+ erro)
     })
 
    

@@ -4,9 +4,7 @@ const Category = require('./Category')
 const slugify = require('slugify')
 
 
-router.get('/',(req,res)=>{
-    res.render('index')
-})
+
 
 router.get('/admin/categories/new',(req,res)=>{
     res.render('admin/categories/new')

@@ -6,6 +6,8 @@ const connection = require('./database/database')
 // import Controllers
 const categoriesController = require('./categories/CategoriesController')
 const articlesController = require('./articles/articlesController') 
+// userController
+const usersController = require('./user/userController')
 
  //import  Models
 const Article = require('./articles/Article')
@@ -25,6 +27,7 @@ connection.authenticate().then(()=>{
 
 app.use('/', categoriesController)
 app.use('/', articlesController)
+app.use('/', usersController)
 
 
 app.use(express.static('public'))

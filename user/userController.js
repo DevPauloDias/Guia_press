@@ -40,22 +40,22 @@ router.post('/users/create', (req, res)=>{
         }else{
 
             var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(password, salt)  
+            var hash = bcrypt.hashSync(password, salt)  
 
-   User.create({
+            User.create({
 
-        email: email,
-        password: hash        
+                email: email,
+                pssword: hash        
 
-    }).then(()=>{
-        res.redirect('/')
+            }).then(()=>{
+               res.redirect('/')
          
-        console.log('usuario cadastrado com sucesso')
+            console.log('usuario cadastrado com sucesso')
 
-    }).catch(err =>{
+            }).catch(err =>{
 
-        console.log('erro ao cadatrar usuario' + err)
-    })
+                console.log('erro ao cadatrar usuario' + err)
+            })
         }        
     })    
 
@@ -71,19 +71,20 @@ router.post('/authenticate', (req, res)=>{
     User.findOne({where:{email: email }
     }).then(user =>{
         if( user != undefined){
-          var correct = bcrypt.compareSync( password, user.password)  
+          var correct = bcrypt.compareSync(password, user.password)  
 
           if(correct){
-            req.session.user= {
-                id: user.id,
-                email: user.email
+                req.session.user= {
+                    id: user.id,
+                    email: user.email
 
+                }
+                console.log('autenticado com sucesso')
+                res.redirect('/admin/articles')
+
+            }else{
+                res.redirect('/login')
             }
-            res.redirect('/admin/articles')
-
-          }else{
-            res.redirect('/login')
-          }
         
         }else{
             res.redirect('/login')
@@ -91,6 +92,11 @@ router.post('/authenticate', (req, res)=>{
 
     })
 
+})
+
+router.get('/logout', (req, res)=>{
+    req.session.user = undefined;
+    res.redirect('/')
 })
 
 

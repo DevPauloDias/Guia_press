@@ -64,6 +64,7 @@ router.get('/login', (req, res)=>{
 
     res.render('admin/users/login')
 })
+
 router.post('/authenticate', (req, res)=>{
     var email = req.body.email
     var password = req.body.password

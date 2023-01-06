@@ -3,6 +3,8 @@ const app = express()
 const bodyParser = require('body-parser')
 const connection = require('./database/database')
 
+var session = require('express-session')
+
 // import Controllers
 const categoriesController = require('./categories/CategoriesController')
 const articlesController = require('./articles/articlesController') 
@@ -24,6 +26,15 @@ connection.authenticate().then(()=>{
 }).catch((erro)=>{
     console.log('erro de conexão:' + erro)
 })
+
+//session
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+  }))
 
 app.use('/', categoriesController)
 app.use('/', articlesController)

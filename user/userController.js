@@ -6,6 +6,7 @@ const adminAuth = require('../midlewares/adminAuth')
 
 
 
+
 router.get('/admin/users',(req, res)=>{
     console.log('passei aq')
     User.findAll().then(users =>{
@@ -94,6 +95,28 @@ router.post('/authenticate', (req, res)=>{
     })
 
 })
+router.post('/login', (req, res)=>{
+    console.log(req.data)
+
+  
+
+
+ var correct = false;
+    // lógica aq
+    if(correct){
+        req.session.user= {
+            id: 50,
+            email: "testePaulo"
+
+        }
+        console.log('autenticado com sucesso')
+        res.redirect('/admin/articles')
+
+    }else{
+        res.redirect('/login')
+    }
+
+})
 
 router.get('/logout', (req, res)=>{
     req.session.user = undefined;
@@ -101,9 +124,5 @@ router.get('/logout', (req, res)=>{
 })
 
 
-
-
-
-
-
+0
 module.exports = router

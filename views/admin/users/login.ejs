@@ -13,11 +13,66 @@
                 <input type="email" name="email" class="form-control" placeholder="email@exemplo.com"><br>
                 <input type="password" name="password" placeholder="*********" class="form-control"><br>
                 <button class="btn btn-success btn-block" type="submit"> Logar</button>
+
+               <div id="login-google">
+                 <script src="https://accounts.google.com/gsi/client" async defer> </script>
+
+                    <div id="g_id_onload"
+                        data-callback="handleCredentialResponse"
+                        data-client_id="814454736055-fb5ukqf0vs9lne14pnigndancpenoct8.apps.googleusercontent.com"
+                        data-login_uri="https://localhost:3333/login"
+                        data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                        data-type="standard"
+                        data-size="large"
+                        data-theme="outline"
+                        data-text="sign_in_with"
+                        data-shape="rectangular"
+                        data-logo_alignment="left">
+                    </div>
+               </div>
             </form>
 
         </card>
     </div>
 </div>
+
+<script>
+    function onSuccess(googleUser) {
+    // Recuperando o token do usuario.
+    var id_token = googleUser.getAuthResponse().id_token;
+
+    // post com jQuery para enviar o token do usuário para o servidor
+    $.post( "http://www.seuservidor.com.br/token",
+      function(id_token) {
+        console.log('sucesso')
+      });
+  }
+        function handleCredentialResponse(response) {
+            // decodeJwtResponse() is a custom function defined by you
+            // to decode the credential response.
+            const responsePayload = decodeJwtResponse(response.credential);
+
+            console.log("ID: " + responsePayload.sub);
+            console.log('Full Name: ' + responsePayload.name);
+            console.log('Given Name: ' + responsePayload.given_name);
+            console.log('Family Name: ' + responsePayload.family_name);
+            console.log("Image URL: " + responsePayload.picture);
+            console.log("Email: " + responsePayload.email);
+         }
+
+</script>
+
+<style>
+    #login-google{
+        width: 300px;
+        text-align: center;
+        margin: auto;
+        margin-top: 1%
+
+    }
+</style>
 
 
 

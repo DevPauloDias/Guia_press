@@ -3,6 +3,7 @@ const router = express.Router()
 const User = require('./User')
 const bcrypt = require('bcryptjs')
 const adminAuth = require('../midlewares/adminAuth')
+const { default: axios } = require('axios')
 
 
 
@@ -46,7 +47,7 @@ router.post('/users/create', (req, res)=>{
             User.create({
 
                 email: email,
-                pssword: hash        
+                password: hash        
 
             }).then(()=>{
                res.redirect('/')
@@ -69,10 +70,44 @@ router.get('/login', (req, res)=>{
 router.post('/authenticate', (req, res)=>{
     var email = req.body.email
     var password = req.body.password
+    var sub = req.body.sub
+
+
 
     User.findOne({where:{email: email }
     }).then(user =>{
         if( user != undefined){
+
+            if(sub != undefined && sub != ''){
+
+                req.session.user= {
+                    id: user.id,
+                    email: user.email                                      
+
+                }
+                console.log(  'Esse usuario logou com o google')
+
+                try{
+                    console.log(' redirecionou - verifica aii')
+
+                    res.redirect('/admin/categories')
+
+                   
+
+                }catch(err){
+
+                    console.log(' não foi possivel redirecionar' + err)
+
+                }
+                
+                
+                
+
+                
+                return
+
+            }
+
           var correct = bcrypt.compareSync(password, user.password)  
 
           if(correct){
@@ -88,6 +123,13 @@ router.post('/authenticate', (req, res)=>{
                 res.redirect('/login')
             }
         
+        }else if(sub != undefined && sub != ''){
+            
+           
+
+            axios.post('http://localhost:3333/users/create', {email: email, password: '123'})
+
+
         }else{
             res.redirect('/login')
         }
@@ -95,28 +137,7 @@ router.post('/authenticate', (req, res)=>{
     })
 
 })
-router.post('/login', (req, res)=>{
-    console.log(req.data)
 
-  
-
-
- var correct = false;
-    // lógica aq
-    if(correct){
-        req.session.user= {
-            id: 50,
-            email: "testePaulo"
-
-        }
-        console.log('autenticado com sucesso')
-        res.redirect('/admin/articles')
-
-    }else{
-        res.redirect('/login')
-    }
-
-})
 
 router.get('/logout', (req, res)=>{
     req.session.user = undefined;

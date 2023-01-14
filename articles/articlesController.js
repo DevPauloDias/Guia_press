@@ -53,6 +53,7 @@ router.post('/articles/delete', (req, res)=>{
             })
 
         }else{
+        
             res.redirect('/admin/articles')
         }
 

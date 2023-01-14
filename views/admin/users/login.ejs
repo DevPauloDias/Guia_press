@@ -5,18 +5,35 @@
 
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script>
-    import jwt_decode from "jwt-decode";
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>       
+    
+
     function handleCredentialResponse(response) {
+        
         const data = jwt_decode(response.credential)
         console.log(data)
+        var sub = data.sub
+        var name = data.name
+        var email = data.email
+
+        axios.post('http://localhost:3333/authenticate', { name: name, email: email, sub: sub}).then(res =>{
+            console.log('dados enviados para o servidor- '+ res)
+        }).catch(err =>{
+            console.log(err)
+        })
+        
+
+        
     }
-    window.onload = function () {
-        google.accounts.id.initialize({
+    window.onload =  async function () {
+       await google.accounts.id.initialize({
         client_id: "814454736055-8enf5i3ke798v95b4qstgn9tm1upsh2e.apps.googleusercontent.com",
         callback: handleCredentialResponse
         });
-        google.accounts.id.renderButton(
+       await google.accounts.id.renderButton(
         document.getElementById("buttonDiv"),
         { theme: "outline", size: "large" }  // customization attributes
         );
@@ -25,6 +42,8 @@
 </script>
 
 <div class="container">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
     <hr>
     <div class="card mt-4">
         <div class="card-header">
@@ -42,9 +61,11 @@
               
                
             </form>
-            <div id="buttonDiv"></div>
 
-            <p id="name"></p>
+            <div id="buttonDiv"></div>   
+           
+
+            <p id="nome"></p>
             <p id="email"></p>          
 
 

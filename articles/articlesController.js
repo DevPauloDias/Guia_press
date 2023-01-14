@@ -11,6 +11,10 @@ router.get('/admin/articles',adminAuth,(req,res)=>{
         include: [{model: Category}]
     }).then(articles =>{
         res.render('admin/articles/index',{ articles: articles})
+        
+    }).catch(err=>{
+        console.log( ' não foi posssível buscar todos os dados')
+        console.log(err)
     })
     
 })

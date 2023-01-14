@@ -92,20 +92,14 @@ router.post('/authenticate', (req, res)=>{
 
                     res.redirect('/admin/categories')
 
-                   
+                    return
 
                 }catch(err){
 
                     console.log(' não foi possivel redirecionar' + err)
+                    return
 
-                }
-                
-                
-                
-
-                
-                return
-
+                }                
             }
 
           var correct = bcrypt.compareSync(password, user.password)  

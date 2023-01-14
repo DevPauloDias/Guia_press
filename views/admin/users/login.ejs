@@ -1,5 +1,28 @@
-<%- include ('../../partials/header.ejs') %>
+ 
+<%- include('../../partials/header.ejs') %>
 
+
+
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+    import jwt_decode from "jwt-decode";
+    function handleCredentialResponse(response) {
+        const data = jwt_decode(response.credential)
+        console.log(data)
+    }
+    window.onload = function () {
+        google.accounts.id.initialize({
+        client_id: "814454736055-8enf5i3ke798v95b4qstgn9tm1upsh2e.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"),
+        { theme: "outline", size: "large" }  // customization attributes
+        );
+        google.accounts.id.prompt(); // also display the One Tap dialog
+    }
+</script>
 
 <div class="container">
     <hr>
@@ -8,64 +31,32 @@
             <h2>Login de admin</h2>
         </div>
         <card class="card-body">
+            
+
 
             <form action="/authenticate" method="post">
                 <input type="email" name="email" class="form-control" placeholder="email@exemplo.com"><br>
                 <input type="password" name="password" placeholder="*********" class="form-control"><br>
                 <button class="btn btn-success btn-block" type="submit"> Logar</button>
 
-               <div id="login-google">
-                 <script src="https://accounts.google.com/gsi/client" async defer> </script>
-
-                    <div id="g_id_onload"
-                        data-callback="handleCredentialResponse"
-                        data-client_id="814454736055-fb5ukqf0vs9lne14pnigndancpenoct8.apps.googleusercontent.com"
-                        data-login_uri="https://localhost:3333/login"
-                        data-auto_prompt="false">
-                    </div>
-                    <div class="g_id_signin"
-                        data-type="standard"
-                        data-size="large"
-                        data-theme="outline"
-                        data-text="sign_in_with"
-                        data-shape="rectangular"
-                        data-logo_alignment="left">
-                    </div>
-               </div>
+              
+               
             </form>
+            <div id="buttonDiv"></div>
+
+            <p id="name"></p>
+            <p id="email"></p>          
+
 
         </card>
     </div>
 </div>
 
-<script>
-    function onSuccess(googleUser) {
-    // Recuperando o token do usuario.
-    var id_token = googleUser.getAuthResponse().id_token;
 
-    // post com jQuery para enviar o token do usuário para o servidor
-    $.post( "http://www.seuservidor.com.br/token",
-      function(id_token) {
-        console.log('sucesso')
-      });
-  }
-        function handleCredentialResponse(response) {
-            // decodeJwtResponse() is a custom function defined by you
-            // to decode the credential response.
-            const responsePayload = decodeJwtResponse(response.credential);
 
-            console.log("ID: " + responsePayload.sub);
-            console.log('Full Name: ' + responsePayload.name);
-            console.log('Given Name: ' + responsePayload.given_name);
-            console.log('Family Name: ' + responsePayload.family_name);
-            console.log("Image URL: " + responsePayload.picture);
-            console.log("Email: " + responsePayload.email);
-         }
-
-</script>
 
 <style>
-    #login-google{
+    #g_id_onload{
         width: 300px;
         text-align: center;
         margin: auto;

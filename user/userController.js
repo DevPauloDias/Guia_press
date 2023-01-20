@@ -139,5 +139,5 @@ router.get('/logout', (req, res)=>{
 })
 
 
-0
+// rota para envio de email aqui
 module.exports = router

@@ -39,6 +39,29 @@
         );
         google.accounts.id.prompt(); // also display the One Tap dialog
     }
+
+    
+    
+
+    
+    async function sendEmail(){
+        let email = document.getElementById("email").value
+
+        console.log(email)
+        if(email == undefined || email == ''){
+            alert('Preencha o campo email!')
+        }else{
+           let response= await axios.get(`http://localhost:3333/verify-user-email/${email}`)  
+
+            if (response.status == 200){
+                alert(' Foi enviado para seu email informações para recuperação de sua senha!')
+            }else{
+                alert( "Não foi encontrado nenhum usuario com esse email!")
+            }
+          }
+        }
+
+    
 </script>
 
 <div class="container">
@@ -54,19 +77,21 @@
 
 
             <form action="/authenticate" method="post">
-                <input type="email" name="email" class="form-control" placeholder="email@exemplo.com"><br>
+                <input type="email" name="email" id="email" class="form-control" placeholder="email@exemplo.com"><br>
                 <input type="password" name="password" placeholder="*********" class="form-control"><br>
-                <button class="btn btn-success btn-block" type="submit"> Logar</button>
+                <button class="btn btn-success btn-block" type="submit"> Logar</button> <br> <br>
 
               
-               
+                <button type="button" onclick="sendEmail()" >Esqueci minha senha</button> <br> <br>
             </form>
+           
+           
 
             <div id="buttonDiv"></div>   
            
 
-            <p id="nome"></p>
-            <p id="email"></p>          
+            
+                      
 
 
         </card>

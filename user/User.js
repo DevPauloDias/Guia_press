@@ -10,8 +10,12 @@ const User = connection.define('users', {
         type: Sequelize.STRING,
         allowNull: false
     
+     }, tempToken:{
+        type: Sequelize.STRING,
+        allowNull: true
      }
 })
+//User.sync()
 
 
 

@@ -7,7 +7,6 @@ const adminAuth = require('../midlewares/adminAuth')
 
 
 router.get('/admin/articles',adminAuth,(req,res)=>{
-    console.log('entrei na rota admin articles')
     Article.findAll({
         include: [{model: Category}]
     }).then(articles =>{

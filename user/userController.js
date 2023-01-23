@@ -43,7 +43,7 @@ router.post('/users/create', (req, res)=>{
             res.redirect('/admin/users/create')
         }else{
 
-            
+            var salt = bcrypt.genSalt(10)
             var hash = bcrypt.hashSync(password, salt)  
 
             User.create({
@@ -103,10 +103,9 @@ router.post('/authenticate',async(req, res)=>{
 
                 }                
             }
-            console.log('senha aqui: ' ,password)
-            console.log('user password: ' ,user.password)
+           
 
-          /*var correct = bcrypt.compareSync(password, user.password)  
+          var correct = bcrypt.compareSync(password, user.password)  
 
           if(correct){
                 req.session.user= {
@@ -120,7 +119,7 @@ router.post('/authenticate',async(req, res)=>{
             }else{
                 console.log('erro no login')
                 res.redirect('/login')
-            }*/
+            }
         
         }else if(sub != undefined && sub != ''){
             
@@ -236,14 +235,16 @@ router.post('/reset-user-password', async(req,res)=>{
             })
             
             if (user != undefined){
+                let salt= bcrypt.genSaltSync(10)
+                let hash = bcrypt.hashSync(password, salt)
                 
                 let correct = bcrypt.compareSync(token, user.tempToken)
 
                 if(correct){
-                    User.update({password: password},{ where:{id: id}})
+                    User.update({password: hash},{ where:{id: id}})
                 }
-                res.status(200)
-                res.send()
+                res.status(200)                
+                res.redirect('/login')
             }else{
                 console.log('Usuario com undefined')
                 res.status(404)

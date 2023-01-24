@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const connection = require('./database/database')
 const cors = require('cors')
+const port = process.env.PORT || 3000
 
 var session = require('express-session')
 
@@ -110,6 +111,6 @@ app.get('/category/:slug', (req, res)=>{
 })
 
 
-app.listen(3333,()=>{
+app.listen(port,()=>{
     console.log('O servidor está rodando')
 })

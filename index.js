@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const connection = require('./database/database')
+const cors = require('cors')
 
 var session = require('express-session')
 
@@ -16,7 +17,7 @@ const Article = require('./articles/Article')
 const Category = require('./categories/Category')
 
 app.set('view engine', 'ejs')
-
+app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json())
 
